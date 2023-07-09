@@ -12,7 +12,7 @@ Most users have their own domain context for their purpose of using LLM. RAG arc
 The architecture for application is to implement RAG(Retrieval Augmented Generation). 
 We can add a “Adapter layer in Vertex AI” for fine tuning(PEFT: Parameter Efficient Fine Tuning) if users want to improve quality of response by adding additional weight from PEFT.
  
-![alt text](https://github.com/shins777/Google_PaLM2_EnterpriseSearch/blob/main/img/architecture.png)
+![alt text](https://github.com/shins777/PaLM2-with-Enterprise-Search/blob/main/img/architecture.png)
 
 The flows of request are as follows
 + After receiving a user query, the application retrieves the context corresponding to the query from Enterprise Search. The Enterprise Search can be replaced by “Matching engine in Vertex AI” that is a vector database in Google. 
@@ -35,15 +35,15 @@ from pathlib import Path
 # 1. GCP information for PaLM2 API
 PROJECT_ID="<Project ID>"
 REGION="<Region name>"   
-SVC_ACCT_FILE=Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
+SVC_ACCT_FILE="<Service Account JSON File>"
 
 # 2. GCP Service account file for Enterprise Search API.
-ES_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
+ES_SVC_ACCT_FILE= "<Service Account JSON File>"
 
 # 3. GCP Search account file for Cloud Logging.
 LOG_PROJECT_ID="<Project ID>"
 LOG_REGION="<Region name>"
-LOG_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
+LOG_SVC_ACCT_FILE= "<Service Account JSON File>"
 
 # 4. PaLM2 Model parameter
 MODEL="google/text-bison@001"
@@ -62,7 +62,7 @@ end_point = "<EndPoint URL in 'GenApp Builder > Enterprise Search > Intergration
 
 To add "Default endpoint(# 6 ) in the variables.py. Copy the Endpoint URL in Enterprise Search as follows.
 
-![alt text](https://github.com/shins777/Google_PaLM2_EnterpriseSearch/blob/main/img/es_api.png)
+![alt text](https://github.com/shins777/PaLM2-with-Enterprise-Search/blob/main/img/es_api.png)
 
 #### 2.3 Run the application in local environment.
 
@@ -89,7 +89,7 @@ The following image shows the system architecture and deployment flow.
 + Run Cloud Run with the docker image in the artifact repository.
 + After launching the Cloud run, users can see the Test UI in their browsers. Use the url of Cloud Run after deploying to access the UI.
 
-![alt text](https://github.com/shins777/Google_PaLM2_EnterpriseSearch/blob/main/img/system_arch.png)
+![alt text](https://github.com/shins777/PaLM2-with-Enterprise-Search/blob/main/img/system_arch.png)
 
 #### 3.1 Build Docker
 
