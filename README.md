@@ -170,8 +170,3 @@ gcloud run deploy SERVICE --image IMAGE_URL
 > ~/Google_PaLM2_EnterpriseSearch$ gcloud run deploy palm2-test --image=us-central1-docker.pkg.dev/gen-ai-project-hangsik/palm2-test-repo/palm2_test:1.1 --region=us-central1 --port=8501 --platform managed --allow-unauthenticated --min-instances=1 --max-instances=5
 
 ````
-
-
-
-
-# PaLM2-with-Enterprise-Search
