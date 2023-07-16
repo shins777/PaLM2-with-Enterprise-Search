@@ -80,16 +80,17 @@ class EnterpriseSearch():
         if dict_results.get('results'):
 
             for result in dict_results['results']:
-
-                reference = result['document']['derivedStructData']['link'] +".\n"
+                
+                reference = "[Reference] " + result['document']['derivedStructData']['link'] +".\n"
+                
                 #print("\n\n--< reference >------")
                 #print(reference)
 
                 #print("\n\n--< snippets >------")
-                for snippet in result['document']['derivedStructData']['snippets']:
-                    context = snippet['snippet'] +"\n"
-                    #print(context)
-                    snippets_ctx = snippets_ctx + context
+                # for snippet in result['document']['derivedStructData']['snippets']:
+                #     context = snippet['snippet'] +"\n"
+                #     #print(context)
+                #     snippets_ctx = snippets_ctx + context
                     
                 #print("\n---<segments>-----")
                 for segment in result['document']['derivedStructData']['extractive_segments']:

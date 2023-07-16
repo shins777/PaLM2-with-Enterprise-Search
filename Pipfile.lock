@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "42b1265b9437e21a3af652a291f99f218dbd9975fd67d7c839104bce0bb1e1ae"
+            "sha256": "60296f45af6dd658b059eb135a4ac1b92d7a90fe15d0cad9a3a1fa5123fbb08f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -568,11 +568,11 @@
         },
         "google-cloud-aiplatform": {
             "hashes": [
-                "sha256:0a80caf50174b06e56c0a3a491f376f8a1a34daa8792abb3479a551b69085f04",
-                "sha256:0af02c921681d12a6769f29a15d6c2decefcf783ad9e64424a18c91c6b615acb"
+                "sha256:810339254f354f9a0084f020aab43a56f710348910c177821f7d962b461244a0",
+                "sha256:9fff957e193cc6de88a189b5a967f0cbd358c1da9b7faf36f3b7141fc0486243"
             ],
             "index": "pypi",
-            "version": "==1.27.1"
+            "version": "==1.28.0"
         },
         "google-cloud-appengine-logging": {
             "hashes": [
@@ -2138,11 +2138,11 @@
         },
         "streamlit": {
             "hashes": [
-                "sha256:02cd55a95acd20d73ff03866956ba6e98d71041ee4728dbfef05cf17069d1bb9",
-                "sha256:af95a78f9d291f12f779cf66a2bdadfafd8a46fe4fcc6ed281492640ed37bf1e"
+                "sha256:569211b426ca078c0c2959a6c9a1413c2e81eca23e769fbf12308ba5bffd1f49",
+                "sha256:fd5f0b64798e9706364408fb589b77595314a6315d13b2d750b963c7ae97f362"
             ],
             "index": "pypi",
-            "version": "==1.23.1"
+            "version": "==1.24.1"
         },
         "streamlit-camera-input-live": {
             "hashes": [

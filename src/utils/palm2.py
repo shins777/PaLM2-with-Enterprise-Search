@@ -1,5 +1,8 @@
 import os
 import json
+from concurrent import futures
+
+
 import vertexai
 from vertexai.preview.language_models import TextGenerationModel
 from google.cloud import logging
@@ -56,8 +59,7 @@ class Palm2_Util(SingletonInstane):
         logging_client = logging.Client(credentials=Palm2_Util.credentials_log)
         Palm2_Util.logger = logging_client.logger('GenAI')
 
-#    def init_vertexai(self):
-
+    
 
 
 
@@ -77,9 +79,9 @@ class Palm2_Util(SingletonInstane):
         
         # Build a query message for prompt engineering.
         query_with_context = f""" {default_prompt}
-        Question: {user_input}
-        Context: {context}
-        AI chatbot :
+        [[ Question ]] : {user_input}
+        [[ Context ]] : {context}
+        AI Chatbot :
         """
         if self.LOGGING:
             self.log("INFO",f"Final Prompt : {query_with_context}")
@@ -108,3 +110,25 @@ class Palm2_Util(SingletonInstane):
 
         if self.TERMINAL_LOGGING:
             print(f"[{severity}] : {log_str}")
+
+    def concurrent_call(self, prompt, temperature, output_token, top_k, top_p, max_thread):
+        with futures.ThreadPoolExecutor() as executor:
+            results = [executor.submit(self.generate_response, prompt, temperature, output_token, top_k, top_p) for _ in range(max_thread)]
+        
+        #outcomes = []
+        outcome_str = ""        
+        index = 1 
+        for f in futures.as_completed(results):
+            
+            out = f"[{index}] Answer : \n\n {f.result()} \n\n\n"
+            out = out + "------------------------------------------------------------------------------\n\n\n"
+            outcome_str = outcome_str + out
+        
+            index = index + 1
+
+            #outcomes.append(f.result())
+            
+            # print(f"RESULT: {f.result()}")
+
+        return outcome_str
+                
