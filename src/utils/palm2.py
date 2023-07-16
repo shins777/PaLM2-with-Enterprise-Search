@@ -12,7 +12,7 @@ from google.oauth2 import service_account
 import google.auth.transport.requests
 import requests
 from dotenv import load_dotenv
-from langchain.llms import VertexAI
+#from langchain.llms import VertexAI
 
 import utils.variables as env
 
@@ -58,9 +58,6 @@ class Palm2_Util(SingletonInstane):
         )
         logging_client = logging.Client(credentials=Palm2_Util.credentials_log)
         Palm2_Util.logger = logging_client.logger('GenAI')
-
-    
-
 
 
     def _model_initialize(self, project_id, region, model_name, credentials ):
