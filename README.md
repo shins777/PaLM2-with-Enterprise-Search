@@ -35,6 +35,9 @@ from pathlib import Path
 # 1. GCP information for PaLM2 API
 PROJECT_ID="<Project ID>"
 REGION="<Region name>"   
+
+# Recommend to put the all service account file in "src/conf" directory.
+
 SVC_ACCT_FILE="<Service Account JSON File>"
 
 # 2. GCP Service account file for Enterprise Search API.
@@ -67,6 +70,8 @@ To add "Default endpoint(# 6 ) in the variables.py. Copy the Endpoint URL in Ent
 #### 2.3 Run the application in local environment.
 
 To authenticate GCP using ADC, create a file ( auth.sh )
+Recommend to put the JSON file in "src/conf" directory since the location of service accout file in variables.py refer to the "conf" directory in code.
+
 ````
 GOOGLE_APPLICATION_CREDENTIALS="<path of the service account file>"
 gcloud auth application-default login

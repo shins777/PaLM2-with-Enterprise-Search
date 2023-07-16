@@ -1,7 +1,7 @@
 import os
 import json
 from concurrent import futures
-
+import multiprocessing
 
 import vertexai
 from vertexai.preview.language_models import TextGenerationModel
@@ -33,6 +33,11 @@ class Palm2_Util(SingletonInstane):
 
     credentials = None
     llm = None
+
+    temperature =0.2
+    output_token = 1024
+    top_k = 40
+    top_p = 0.8
 
     logger = None
     TERMINAL_LOGGING = False
@@ -109,6 +114,7 @@ class Palm2_Util(SingletonInstane):
             print(f"[{severity}] : {log_str}")
 
     def concurrent_call(self, prompt, temperature, output_token, top_k, top_p, max_thread):
+        
         with futures.ThreadPoolExecutor() as executor:
             results = [executor.submit(self.generate_response, prompt, temperature, output_token, top_k, top_p) for _ in range(max_thread)]
         

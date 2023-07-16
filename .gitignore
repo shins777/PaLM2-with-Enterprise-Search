@@ -1,18 +1,18 @@
 # source env file
 
 #-- directories ----
-data/
+
 conf/*.json
-conf/vpc_setting
 
 #-- sources ----
 
 src/utils/variables.py
 src/utils/env.py
 
+Dockerfile
 auth.sh
 run.sh
-
+*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

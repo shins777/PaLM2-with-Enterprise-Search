@@ -84,7 +84,7 @@ st.subheader("An emulator to interact with Google Palm2 and Enterprise Search")
 context = None
 context_with_reference = None
 prompt = None
-output = None
+outcomes = None
 
 snippets_ctx = None
 segments_ctx = None
@@ -109,11 +109,10 @@ with tab1 :
 
         t4 = time.time()
         #output = palm2_util.generate_response(prompt,temperature, output_token, top_k, top_p)
-
         outcomes = palm2_util.concurrent_call(prompt,temperature, output_token, top_k, top_p, n_threads)
 
         if palm2_util.LOGGING:
-            palm2_util.log("INFO", f"Response from PaLM2 :\n {output}")
+            palm2_util.log("INFO", f"Response from PaLM2 :\n {outcomes}")
             palm2_util.log("INFO","\n\n-------------------------[ Query End ]---------------------------\n\n")
 
         t5 = time.time()
@@ -130,23 +129,11 @@ with tab1 :
         st.session_state.past.append(user_input) 
         st.session_state.generated.append(outcomes) 
 
-        # for index,outcome in enumerate(outcomes):
-        #     st.session_state.generated.append(f"[{index+1}] "+outcome) 
-
-
-
     # Display the conversation history
     with st.expander("Conversation", expanded=True):
-        
-        # print(st.info(st.session_state["past"]))
-        # print(st.info(st.session_state["generated"]))    
-
         for i in range(len(st.session_state["past"])-1, -1, -1):
             st.info(st.session_state["past"][i],icon="😊")
             st.success(st.session_state["generated"][i], icon="🤖")
-
-            # for j in range(len(st.session_state['generated'])-n_threads, -n_threads, -1):
-            #     st.success(st.session_state["generated"][j], icon="🤖")
 
 with tab2:
     st.subheader("Review the output from Palm2")
@@ -155,7 +142,7 @@ with tab2:
     with st.expander("Final Prompt"):
         st.write(prompt)
     with st.expander("Answer from Palm2"):
-        st.write(output)
+        st.write(outcomes)
 
 with tab3:
     st.subheader("Detailed information about response from the Enterprise Search")
