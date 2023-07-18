@@ -34,10 +34,10 @@ class Palm2_Util(SingletonInstane):
     credentials = None
     llm = None
 
-    temperature =0.2
-    output_token = 1024
-    top_k = 40
-    top_p = 0.8
+    # temperature =0.2
+    # output_token = 1024
+    # top_k = 40
+    # top_p = 0.8
 
     logger = None
     TERMINAL_LOGGING = False

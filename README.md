@@ -29,6 +29,13 @@ But, If you want to use one service account for those. You may set the same serv
 + Service account for Enterprise Search
 + Service account for integrated logging.
 
+Service account should have the following access.
++ Discovery Engine Admin
++ Document AI Administrator
++ Logs Writer
++ Storage Admin
++ Vertex AI Administrator
+
 ````
 from pathlib import Path
 
@@ -37,6 +44,9 @@ PROJECT_ID="<Project ID>"
 REGION="<Region name>"   
 
 # Recommend to put the all service account file in "src/conf" directory.
+
+
+
 
 SVC_ACCT_FILE="<Service Account JSON File>"
 
