@@ -93,11 +93,11 @@ class EnterpriseSearch():
                     #print(context)
                     snippets_ctx = snippets_ctx + context
 
-                # print("\n---< answers >-----")
-                for answer in result['document']['derivedStructData']['extractive_answers']:
-                    content = answer['content'] +"\n"
-                    #print(content)
-                    answer_ctx = answer_ctx + content
+                # # print("\n---< answers >-----")
+                # for answer in result['document']['derivedStructData']['extractive_answers']:
+                #     content = answer['content'] +"\n"
+                #     #print(content)
+                #     answer_ctx = answer_ctx + content
 
                 #print("\n---<segments>-----")
                 for segment in result['document']['derivedStructData']['extractive_segments']:
