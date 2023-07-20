@@ -42,7 +42,7 @@ class EnterpriseSearch():
                 "snippetSpec": {"maxSnippetCount": 5},
                 # "summarySpec": { "summaryResultCount": 5},
                 "extractiveContentSpec":{
-                    # "maxExtractiveAnswerCount": 5,
+                    "maxExtractiveAnswerCount": 1,
                     "maxExtractiveSegmentCount": 1}
             },
             # "queryExpansionSpec":{"condition":"AUTO"}
@@ -70,6 +70,7 @@ class EnterpriseSearch():
         outcome =""
         snippets_ctx =""
         segments_ctx =""
+        answer_ctx =""
 
         outcome_with_reference=""
         summary= ""
@@ -87,24 +88,25 @@ class EnterpriseSearch():
                 #print(reference)
 
                 #print("\n\n--< snippets >------")
-                # for snippet in result['document']['derivedStructData']['snippets']:
-                #     context = snippet['snippet'] +"\n"
-                #     #print(context)
-                #     snippets_ctx = snippets_ctx + context
-                    
+                for snippet in result['document']['derivedStructData']['snippets']:
+                    context = snippet['snippet'] +"\n"
+                    #print(context)
+                    snippets_ctx = snippets_ctx + context
+
+                # print("\n---< answers >-----")
+                for answer in result['document']['derivedStructData']['extractive_answers']:
+                    content = answer['content'] +"\n"
+                    #print(content)
+                    answer_ctx = answer_ctx + content
+
                 #print("\n---<segments>-----")
                 for segment in result['document']['derivedStructData']['extractive_segments']:
                     content = segment['content'] +"\n"
                     #print(content)
                     segments_ctx = segments_ctx + content
 
-                # print("\n---< answers >-----")
-                # for answer in result['document']['derivedStructData']['extractive_answers']:
-                #     content = "\t" + answer['content'] +"\n"
-                #     print(content)
-
-                outcome_with_reference  = outcome_with_reference + (reference +"\n\n" + snippets_ctx +"\n\n"+ segments_ctx) +"\n\n"
-                outcome =  outcome + ( snippets_ctx +"\n\n"+ segments_ctx) +"\n\n"
+                outcome_with_reference  = outcome_with_reference + (reference +"\n\n" + snippets_ctx +"\n\n"+ answer_ctx+"\n\n"+ segments_ctx ) +"\n\n"
+                outcome =  outcome + ( snippets_ctx +"\n\n"+ answer_ctx+"\n\n"+ segments_ctx ) +"\n\n"
 
         if Palm2_Util.instance().LOGGING:
             Palm2_Util.instance().log("INFO",f"Context from Enterprise Search : \n{outcome_with_reference} \n")

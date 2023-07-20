@@ -75,7 +75,7 @@ with st.sidebar.expander("Configuration", expanded=True):
     with side_tab2 : 
         default_prompt = st.text_area("Add default prompt, this will be added automatically in front of your request", value= env.default_prompt_value)
         es_url = st.text_area("Put your Enterprise engine url to search context",value=env.end_point)
-        num_es = st.number_input(' (#) of Enterprise search results',min_value=1,max_value=5, value=4)
+        num_es = st.number_input(' (#) of Enterprise search results',min_value=1,max_value=5, value=2)
 
 # Set up the Streamlit app layout
 st.title("Palm2 + ES Tester")

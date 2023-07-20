@@ -1,4 +1,4 @@
-### Google_PaLM2_EnterpriseSearch
+### Google_PaLM2_EnterpriseSearch ( Unstructured Search )
 
 ### 1. Overview
 The purpose of this demo is to test Google's PaLM2 API with Enterprise Search.
@@ -29,7 +29,7 @@ But, If you want to use one service account for those. You may set the same serv
 + Service account for Enterprise Search
 + Service account for integrated logging.
 
-Service account should have the following access.
+Service accounts should have the following access for each purpose.
 + Discovery Engine Admin
 + Document AI Administrator
 + Logs Writer
