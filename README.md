@@ -42,21 +42,15 @@ from pathlib import Path
 # 1. GCP information for PaLM2 API
 PROJECT_ID="<Project ID>"
 REGION="<Region name>"   
-
-# Recommend to put the all service account file in "src/conf" directory.
-
-
-
-
-SVC_ACCT_FILE="<Service Account JSON File>"
+SVC_ACCT_FILE=Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
 
 # 2. GCP Service account file for Enterprise Search API.
-ES_SVC_ACCT_FILE= "<Service Account JSON File>"
+ES_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
 
 # 3. GCP Search account file for Cloud Logging.
 LOG_PROJECT_ID="<Project ID>"
 LOG_REGION="<Region name>"
-LOG_SVC_ACCT_FILE= "<Service Account JSON File>"
+LOG_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
 
 # 4. PaLM2 Model parameter
 MODEL="google/text-bison@001"
@@ -68,7 +62,7 @@ TOP_K=40
 # 5. Default prompt information.
 default_prompt_value = "< Add default prompt >"
 
-# 6. Default endpoint for Enterprise Search
+# 6. Default endpoint for Enterprise Search ( Unstructured search engine )
 end_point = "<EndPoint URL in 'GenApp Builder > Enterprise Search > Intergration > API'>"
 
 ````
