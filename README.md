@@ -1,7 +1,7 @@
 ### Google_PaLM2_EnterpriseSearch ( Unstructured Search )
 
 ### 1. Overview
-The purpose of this demo is to test Google's PaLM2 API with Enterprise Search.
+The purpose of this demo is to test Google's PaLM2 API with Enterprise Search(Note: Unstructured search engine only)
 The architecture used in this demo is to implement RAG(Retrieval-Augmented Generation) with Enterprise search as a repository to store domain knowledge.
 Most users have their own domain context for their purpose of using LLM. RAG architecture could be inevitable at the moment even though fine tuning provides better quality of outcome as time goes by.
 
