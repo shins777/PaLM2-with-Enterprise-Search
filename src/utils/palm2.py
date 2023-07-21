@@ -49,25 +49,33 @@ class Palm2_Util(SingletonInstane):
 
         print("Create instance of Palm2_Util")
 
+        # Palm2_Util.credentials = service_account.Credentials.from_service_account_file(
+        #     env.SVC_ACCT_FILE, 
+        #     scopes=['https://www.googleapis.com/auth/cloud-platform']
+        # )
+        # Palm2_Util.llm = self._model_initialize(env.PROJECT_ID, env.REGION, model, Palm2_Util.credentials ) 
+
+        # logging_client = logging.Client(credentials=Palm2_Util.credentials)
+        # Palm2_Util.logger = logging_client.logger('GenAI')
+
+
+    def model_initialize(self, project_id, region, model_name ):
+        
+        """ Initialize LLM model """
         Palm2_Util.credentials = service_account.Credentials.from_service_account_file(
             env.SVC_ACCT_FILE, 
             scopes=['https://www.googleapis.com/auth/cloud-platform']
         )
-        Palm2_Util.llm = self._model_initialize(env.PROJECT_ID, env.REGION, env.MODEL, Palm2_Util.credentials ) 
-
+        
+        # Initialize Palm2.
+        vertexai.init(project=project_id, location=region, credentials =Palm2_Util.credentials)
+        Palm2_Util.llm = TextGenerationModel.from_pretrained(model_name)
+        
         logging_client = logging.Client(credentials=Palm2_Util.credentials)
         Palm2_Util.logger = logging_client.logger('GenAI')
 
 
-    def _model_initialize(self, project_id, region, model_name, credentials ):
-        
-        """ Initialize LLM model """
-
-        # Initialize Palm2.
-        vertexai.init(project=project_id, location=region, credentials =credentials)
-        model = TextGenerationModel.from_pretrained(model_name)
-        
-        return model
+        #return model
 
     def build_query(self, user_input,context, default_prompt ):
         

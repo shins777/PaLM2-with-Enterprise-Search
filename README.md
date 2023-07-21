@@ -43,7 +43,7 @@ REGION="<Region name>"
 SVC_ACCT_FILE=Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
 
 # 2. PaLM2 Model parameter
-MODEL="google/text-bison@001"
+MODEL=["google/text-bison@latest","google/text-bison@001"]
 MAX_OUTPUT_TOKENS=1024
 TEMPERATURE=0.2
 TOP_P=0.8

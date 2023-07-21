@@ -64,7 +64,7 @@ with st.sidebar.expander("Configuration", expanded=True):
     side_tab1, side_tab2 = st.tabs(["LLM Model", "Enterprise Search"])
 
     with side_tab1:
-        model = st.selectbox(label='Model', options=[env.MODEL])
+        model = st.selectbox(label='Model', options=env.MODEL)
         n_threads = st.number_input(' Number of Answer ',min_value=1,max_value=5, value=3)
         st.markdown("""---""")
         temperature = st.number_input(' Temperature ',min_value=0.0,max_value=1.0,step=0.1, format="%.1f",value= env.TEMPERATURE)
@@ -76,6 +76,8 @@ with st.sidebar.expander("Configuration", expanded=True):
         default_prompt = st.text_area("Add default prompt, this will be added automatically in front of your request", value= env.default_prompt_value)
         es_url = st.text_area("Put your Enterprise engine url to search context",value=env.end_point)
         num_es = st.number_input(' (#) of Enterprise search results',min_value=1,max_value=5, value=2)
+
+palm2_util.model_initialize(env.PROJECT_ID,env.REGION, model)
 
 # Set up the Streamlit app layout
 st.title("Palm2 + ES Tester")
