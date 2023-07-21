@@ -7,9 +7,7 @@ conf/*.json
 #-- sources ----
 
 src/utils/variables.py
-src/utils/env.py
 
-Dockerfile
 auth.sh
 run.sh
 *.json
