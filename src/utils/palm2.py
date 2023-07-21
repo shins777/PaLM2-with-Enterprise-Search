@@ -47,7 +47,6 @@ class Palm2_Util(SingletonInstane):
 
         """ Initialize VertexAI instance in a way of langchain library. """
 
-
         print("Create instance of Palm2_Util")
 
         Palm2_Util.credentials = service_account.Credentials.from_service_account_file(
@@ -56,12 +55,7 @@ class Palm2_Util(SingletonInstane):
         )
         Palm2_Util.llm = self._model_initialize(env.PROJECT_ID, env.REGION, env.MODEL, Palm2_Util.credentials ) 
 
-        # For Centralized Logging
-        Palm2_Util.credentials_log = service_account.Credentials.from_service_account_file(
-            env.LOG_SVC_ACCT_FILE, 
-            scopes=['https://www.googleapis.com/auth/cloud-platform']
-        )
-        logging_client = logging.Client(credentials=Palm2_Util.credentials_log)
+        logging_client = logging.Client(credentials=Palm2_Util.credentials)
         Palm2_Util.logger = logging_client.logger('GenAI')
 
 

@@ -42,7 +42,7 @@ def get_text():
                             placeholder="Your AI assistant here! Ask me anything ...", 
                             label_visibility='hidden')
     if es_url=="":
-        st.warning('Put your Enterprise Search Endpoint in "Configuration > Enterprise Search" to get the context ', icon="⚠️")
+        st.warning('Put your Enterprise Search Endpoint(Unstructured) in "Configuration > Enterprise Search" to get the context ', icon="⚠️")
     return input_text
 
 def get_text2():

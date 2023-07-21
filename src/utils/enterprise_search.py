@@ -13,10 +13,9 @@ class EnterpriseSearch():
     def __init__(self):
 
         """ Credential initialization with Service account"""
-        
 
         EnterpriseSearch.credentials = service_account.Credentials.from_service_account_file(
-            env.ES_SVC_ACCT_FILE, 
+            env.SVC_ACCT_FILE, 
             scopes=['https://www.googleapis.com/auth/cloud-platform']
         )
         
