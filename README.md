@@ -23,11 +23,9 @@ The flows of request are as follows
 
 To configure the demo, create a variables.py as follows and put the file into utils directory.
 
-You need to set up three ways to get service accounts for credentials in the demo as follows. 
-But, If you want to use one service account for those. You may set the same service account for three different purposes. 
-+ Service account for PaLM2 API
-+ Service account for Enterprise Search
-+ Service account for integrated logging.
+You need to set up three ways to get service accounts for credentials in the demo.
+Put your service account file in "/src/conf" directory.
+If you have some credential issues, check the location of your service account file. 
 
 Service accounts should have the following access for each purpose.
 + Discovery Engine Admin
@@ -44,25 +42,17 @@ PROJECT_ID="<Project ID>"
 REGION="<Region name>"   
 SVC_ACCT_FILE=Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
 
-# 2. GCP Service account file for Enterprise Search API.
-ES_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
-
-# 3. GCP Search account file for Cloud Logging.
-LOG_PROJECT_ID="<Project ID>"
-LOG_REGION="<Region name>"
-LOG_SVC_ACCT_FILE= Path(__file__).parents[2].as_posix()+"/src/conf/<Service Account JSON File>"
-
-# 4. PaLM2 Model parameter
+# 2. PaLM2 Model parameter
 MODEL="google/text-bison@001"
 MAX_OUTPUT_TOKENS=1024
 TEMPERATURE=0.2
 TOP_P=0.8
 TOP_K=40
 
-# 5. Default prompt information.
+# 3. Default prompt information.
 default_prompt_value = "< Add default prompt >"
 
-# 6. Default endpoint for Enterprise Search ( Unstructured search engine )
+# 4. Default endpoint for Enterprise Search ( Unstructured search engine )
 end_point = "<EndPoint URL in 'GenApp Builder > Enterprise Search > Intergration > API'>"
 
 ````
