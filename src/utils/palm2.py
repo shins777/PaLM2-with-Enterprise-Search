@@ -5,6 +5,10 @@ import multiprocessing
 
 import vertexai
 from vertexai.preview.language_models import TextGenerationModel
+from vertexai.preview.language_models import ChatModel
+from vertexai.preview.language_models import CodeChatModel
+from vertexai.preview.language_models import CodeGenerationModel
+
 from google.cloud import logging
 
 import google
@@ -46,18 +50,7 @@ class Palm2_Util(SingletonInstane):
     def __init__(self):
 
         """ Initialize VertexAI instance in a way of langchain library. """
-
         print("Create instance of Palm2_Util")
-
-        # Palm2_Util.credentials = service_account.Credentials.from_service_account_file(
-        #     env.SVC_ACCT_FILE, 
-        #     scopes=['https://www.googleapis.com/auth/cloud-platform']
-        # )
-        # Palm2_Util.llm = self._model_initialize(env.PROJECT_ID, env.REGION, model, Palm2_Util.credentials ) 
-
-        # logging_client = logging.Client(credentials=Palm2_Util.credentials)
-        # Palm2_Util.logger = logging_client.logger('GenAI')
-
 
     def model_initialize(self, project_id, region, model_name ):
         
@@ -69,13 +62,13 @@ class Palm2_Util(SingletonInstane):
         
         # Initialize Palm2.
         vertexai.init(project=project_id, location=region, credentials =Palm2_Util.credentials)
-        Palm2_Util.llm = TextGenerationModel.from_pretrained(model_name)
-        
+
+        # TextGenerationModel
+        if model_name =='google/text-bison@latest' or model_name =='google/text-bison@001':
+            Palm2_Util.llm = TextGenerationModel.from_pretrained(model_name)
+            
         logging_client = logging.Client(credentials=Palm2_Util.credentials)
         Palm2_Util.logger = logging_client.logger('GenAI')
-
-
-        #return model
 
     def build_query(self, user_input,context, default_prompt ):
         
