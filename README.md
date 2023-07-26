@@ -181,7 +181,7 @@ Note:
 
 [Command Line]
 
-To deploy the images in Artifact registry in GCP, refer to the following url. 
+To deploy the images in the Artifact registry in GCP, refer to the following url. 
 
 https://cloud.google.com/run/docs/deploying#command-line
 
