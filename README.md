@@ -63,6 +63,19 @@ To add "Default endpoint(# 6 ) in the variables.py. Copy the Endpoint URL in Ent
 
 #### 2.3 Run the application in local environment.
 
+First, you should install some libraries as follows.
+```
+streamlit 
+langchain
+pypdf 
+google-cloud-logging 
+google-cloud-discoveryengine
+google-cloud-aiplatform
+python-dotenv
+
+```
+
+
 To authenticate GCP using ADC, create a file ( auth.sh )
 Recommend to put the JSON file in "src/conf" directory since the location of service accout file in variables.py refer to the "conf" directory in code.
 
