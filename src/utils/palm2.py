@@ -15,7 +15,7 @@ import google
 from google.oauth2 import service_account
 import google.auth.transport.requests
 import requests
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 #from langchain.llms import VertexAI
 
 import utils.variables as env

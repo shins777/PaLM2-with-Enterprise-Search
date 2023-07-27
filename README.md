@@ -66,12 +66,9 @@ To add "Default endpoint(# 6 ) in the variables.py. Copy the Endpoint URL in Ent
 First, you should install some libraries as follows.
 ```
 streamlit 
-langchain
-pypdf 
 google-cloud-logging 
 google-cloud-discoveryengine
 google-cloud-aiplatform
-python-dotenv
 
 ```
 
@@ -172,7 +169,19 @@ gcloud artifacts repositories describe REPOSITORY --project=PROJECT-ID --locatio
 
 #### 3.3 Deploy the Docker image on the Cloud run.
 
-To deploy the images in Artifact registry in GCP, refer to the following url. 
+[Console]
+
+Set up Cloud run in the GCP console with the artifact in the registry.
+https://cloud.google.com/run/docs/deploying
+
+Note: 
++ Container image URL : find an artifact in the registry that was uploaded.
++ Allow unauthenticated innovations : to access the demo from the public environment.
++ Container port : 8501
+
+[Command Line]
+
+To deploy the images in the Artifact registry in GCP, refer to the following url. 
 
 https://cloud.google.com/run/docs/deploying#command-line
 
