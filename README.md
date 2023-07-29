@@ -1,5 +1,14 @@
 ### Google_PaLM2_EnterpriseSearch ( Unstructured Search )
 
+Latest Update
++ Jul 28, 2023 
+    + Added Chat mode to find more detailed information from the contexts that were searched from Enterprise Search. 
+    + Added extractive_answers (the previous code used extractive_segments only) to enrich the quality of response by providing more context from the Enterprise Search results.
+        + https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1beta/ContentSearchSpec 
++ Jul 25, 2023 
+    + Removed redundant tab to explain the snippet and segment that retrieved from Enterprise Search. Recommend to use the Response analysis tab to clarify the results. 
+
+
 ### 1. Overview
 The purpose of this demo is to test Google's PaLM2 API with Enterprise Search(Note: Unstructured search engine only)
 The architecture used in this demo is to implement RAG(Retrieval-Augmented Generation) with Enterprise search as a repository to store domain knowledge.
