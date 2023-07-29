@@ -67,12 +67,9 @@ To add "Default endpoint(# 6 ) in the variables.py. Copy the Endpoint URL in Ent
 First, you should install some libraries as follows.
 ```
 streamlit 
-langchain
-pypdf 
 google-cloud-logging 
 google-cloud-discoveryengine
 google-cloud-aiplatform
-python-dotenv
 
 ```
 
