@@ -38,10 +38,12 @@ class EnterpriseSearch():
             "page_size": str(num_es), 
             "offset": 0,
             "contentSearchSpec":{
-                "snippetSpec": {"maxSnippetCount": 5},
-                # "summarySpec": { "summaryResultCount": 5},
+                "snippetSpec": {"maxSnippetCount": 5,
+                                },
+                # "summarySpec": { "summaryResultCount": 5,
+                #                  "includeCitations": True},
                 "extractiveContentSpec":{
-                    "maxExtractiveAnswerCount": 1,
+                    "maxExtractiveAnswerCount": 5,
                     "maxExtractiveSegmentCount": 1}
             },
             # "queryExpansionSpec":{"condition":"AUTO"}
@@ -66,54 +68,69 @@ class EnterpriseSearch():
 
         dict_results = json.loads(response_text)
         
-        outcome =""
-        snippets_ctx =""
-        segments_ctx =""
-        answer_ctx =""
+        #print(dict_results)
 
-        outcome_with_reference=""
-        summary= ""
+        outcome = ""
+        outcome_ref =""
 
-        if dict_results.get('summary'):
-            summary = "\t" + dict_results['summary']['summaryText']
+        outcome_list =[]
+        outcome_ref_list=[]
 
+        #summary= ""
+        # if dict_results.get('summary'):
+        #     summary = "\t" + dict_results['summary']['summaryText']
+
+        idx = 1
         if dict_results.get('results'):
 
             for result in dict_results['results']:
+
+                snippets_ctx =""
+                answer_ctx =""
+                segments_ctx =""
                 
-                reference = "[Reference] " + result['document']['derivedStructData']['link'] +".\n"
+                reference = result['document']['derivedStructData']['link']
                 
                 #print("\n\n--< reference >------")
                 #print(reference)
 
                 #print("\n\n--< snippets >------")
                 for snippet in result['document']['derivedStructData']['snippets']:
-                    context = snippet['snippet'] +"\n"
-                    #print(context)
+                    context = snippet['snippet']
                     snippets_ctx = snippets_ctx + context
+                
+                #print(snippets_ctx)
 
-                # # print("\n---< answers >-----")
-                # for answer in result['document']['derivedStructData']['extractive_answers']:
-                #     content = answer['content'] +"\n"
-                #     #print(content)
-                #     answer_ctx = answer_ctx + content
+                #print("\n---< answers >-----")
+                for answer in result['document']['derivedStructData']['extractive_answers']:
+                    content = answer['content']
+                    answer_ctx = answer_ctx + content
+
+                #print(answer_ctx)
 
                 #print("\n---<segments>-----")
                 for segment in result['document']['derivedStructData']['extractive_segments']:
-                    content = segment['content'] +"\n"
-                    #print(content)
+                    content = segment['content']
                     segments_ctx = segments_ctx + content
 
-                outcome_with_reference  = outcome_with_reference + (reference +"\n\n" + snippets_ctx +"\n\n"+ answer_ctx+"\n\n"+ segments_ctx ) +"\n\n"
-                outcome =  outcome + ( snippets_ctx +"\n\n"+ answer_ctx+"\n\n"+ segments_ctx ) +"\n\n"
+                #print(segments_ctx)
+
+                each_outcome_ref = f"\n\n-------------------------- \n\nContext {idx} : \n\nReference : {reference} \n\n {snippets_ctx} \n\n {answer_ctx} \n\n {segments_ctx}"
+                each_outcome = f"\n\n +{snippets_ctx} \n\n {answer_ctx} \n\n {segments_ctx}"
+
+                outcome_ref_list.append(each_outcome_ref)
+                outcome_list.append(each_outcome)
+
+                idx = idx + 1
 
         if Palm2_Util.instance().LOGGING:
-            Palm2_Util.instance().log("INFO",f"Context from Enterprise Search : \n{outcome_with_reference} \n")
+            Palm2_Util.instance().log("INFO",f"Context from Enterprise Search : \n{outcome_ref} \n")
+        outcome_ref = "\n\n".join(outcome_ref_list)
+        outcome = "\n\n".join(outcome_list)
 
-        snippets_ctx = snippets_ctx.replace("<b>","").replace("</b>","").replace("&quot;","")
-        segments_ctx = segments_ctx.replace("<b>","").replace("</b>","").replace("&quot;","")
+        # print(outcome_ref)
 
+        outcome_ref = outcome_ref.replace("<b>","").replace("</b>","").replace("&quot;","")
         outcome = outcome.replace("<b>","").replace("</b>","").replace("&quot;","")
-        outcome_with_reference = outcome_with_reference.replace("<b>","").replace("</b>","").replace("&quot;","")
 
-        return outcome, outcome_with_reference, snippets_ctx, segments_ctx
+        return outcome, outcome_ref

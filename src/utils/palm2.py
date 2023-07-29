@@ -15,8 +15,6 @@ import google
 from google.oauth2 import service_account
 import google.auth.transport.requests
 import requests
-#from dotenv import load_dotenv
-#from langchain.llms import VertexAI
 
 import utils.variables as env
 
@@ -37,11 +35,7 @@ class Palm2_Util(SingletonInstane):
 
     credentials = None
     llm = None
-
-    # temperature =0.2
-    # output_token = 1024
-    # top_k = 40
-    # top_p = 0.8
+    chat_model = None
 
     logger = None
     TERMINAL_LOGGING = False
@@ -52,7 +46,7 @@ class Palm2_Util(SingletonInstane):
         """ Initialize VertexAI instance in a way of langchain library. """
         print("Create instance of Palm2_Util")
 
-    def model_initialize(self, project_id, region, model_name ):
+    def model_initialize(self, project_id, region, text_model_name,chat_model_name ):
         
         """ Initialize LLM model """
         Palm2_Util.credentials = service_account.Credentials.from_service_account_file(
@@ -64,9 +58,12 @@ class Palm2_Util(SingletonInstane):
         vertexai.init(project=project_id, location=region, credentials =Palm2_Util.credentials)
 
         # TextGenerationModel
-        if model_name =='google/text-bison@latest' or model_name =='google/text-bison@001':
-            Palm2_Util.llm = TextGenerationModel.from_pretrained(model_name)
-            
+        if text_model_name =='google/text-bison@latest' or text_model_name =='google/text-bison@001':
+            Palm2_Util.llm = TextGenerationModel.from_pretrained(text_model_name)
+
+        # ChatModel.
+        Palm2_Util.chat_model = ChatModel.from_pretrained(chat_model_name)
+
         logging_client = logging.Client(credentials=Palm2_Util.credentials)
         Palm2_Util.logger = logging_client.logger('GenAI')
 
