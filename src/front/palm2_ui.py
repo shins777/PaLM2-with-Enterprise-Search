@@ -118,7 +118,7 @@ with tab1 :
             store.context, store.context_with_reference = es.parse_discovery_results(search_result)
 
             t3 = time.time()
-            store.prompt = palm2_util.build_query(user_input, store.context, default_prompt)
+            store.prompt = palm2_util.build_query(user_input, store.context_with_reference, default_prompt)
 
             t4 = time.time()
             store.outcomes = palm2_util.concurrent_call(store.prompt,temperature, output_token, top_k, top_p, n_threads)

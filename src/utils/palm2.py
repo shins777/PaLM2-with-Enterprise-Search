@@ -72,11 +72,11 @@ class Palm2_Util(SingletonInstane):
         """Prompt building  """
         
         # Build a query message for prompt engineering.
-        query_with_context = f""" {default_prompt}
-        [[ Question ]] : {user_input}
-        [[ Context ]] : {context}
-        AI Chatbot :
-        """
+        query_with_context = f"""{default_prompt}\n
+Context : [ {context} ] \n
+Question : {user_input} \n
+Answer: Let's think step by step. Therefore, to briefly summarize the above, my answer is this.
+"""
         if self.LOGGING:
             self.log("INFO",f"Final Prompt : {query_with_context}")
 

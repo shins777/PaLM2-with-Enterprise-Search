@@ -38,8 +38,8 @@ class EnterpriseSearch():
             "page_size": str(num_es), 
             "offset": 0,
             "contentSearchSpec":{
-                "snippetSpec": {"maxSnippetCount": 5,
-                                },
+                # "snippetSpec": {"maxSnippetCount": 5,
+                #                 },
                 # "summarySpec": { "summaryResultCount": 5,
                 #                  "includeCitations": True},
                 "extractiveContentSpec":{
@@ -80,7 +80,6 @@ class EnterpriseSearch():
         # if dict_results.get('summary'):
         #     summary = "\t" + dict_results['summary']['summaryText']
 
-        idx = 1
         if dict_results.get('results'):
 
             for result in dict_results['results']:
@@ -95,9 +94,9 @@ class EnterpriseSearch():
                 #print(reference)
 
                 #print("\n\n--< snippets >------")
-                for snippet in result['document']['derivedStructData']['snippets']:
-                    context = snippet['snippet']
-                    snippets_ctx = snippets_ctx + context
+                # for snippet in result['document']['derivedStructData']['snippets']:
+                #     context = snippet['snippet']
+                #     snippets_ctx = snippets_ctx + context
                 
                 #print(snippets_ctx)
 
@@ -115,13 +114,11 @@ class EnterpriseSearch():
 
                 #print(segments_ctx)
 
-                each_outcome_ref = f"\n\n-------------------------- \n\nContext {idx} : \n\nReference : {reference} \n\n {snippets_ctx} \n\n {answer_ctx} \n\n {segments_ctx}"
+                each_outcome_ref = f"\n\nReference : {reference} \n\n {snippets_ctx} \n\n {answer_ctx} \n\n {segments_ctx}"
                 each_outcome = f"\n\n +{snippets_ctx} \n\n {answer_ctx} \n\n {segments_ctx}"
 
                 outcome_ref_list.append(each_outcome_ref)
                 outcome_list.append(each_outcome)
-
-                idx = idx + 1
 
         if Palm2_Util.instance().LOGGING:
             Palm2_Util.instance().log("INFO",f"Context from Enterprise Search : \n{outcome_ref} \n")
