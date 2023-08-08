@@ -1,28 +1,45 @@
 
-
-class SingletonInstane:
-    __instance = None
-
-    @classmethod
-    def __getInstance(cls):
-        return cls.__instance
-
-    @classmethod
-    def instance(cls, *args, **kargs):
-        cls.__instance = cls(*args, **kargs)
-        cls.instance = cls.__getInstance
-        return cls.__instance
-
-class Instance_Store(SingletonInstane):
+class ChainsStore():
  
-    context = None
-    context_with_reference = None
-    prompt = None
-    outcomes = None
+    context = ""
+    context_with_reference = ""
+    
+    es_search_result =""
+    vectordb_search_result =""
+
+    public_search_result = ""
+    
+    reasoning_prompt = ""
+    summary_prompt = ""
+    final_prompt = ""
+    final_context = ""
+
+    reasoning_outcomes = ""
+    summary_outcomes = ""
+    final_outcomes = ""
+
+    latency = ""
 
     chat = None
 
     def __init__(self):
+        print("Create instance of ChainsStore")
 
-        """ Initialize VertexAI instance in a way of langchain library. """
-        print("Create instance of Instance_Store")
+class ParameterStore():
+ 
+    text_model = ""
+    chat_model = ""
+    
+    n_threads = ""
+
+    temperature = ""
+    output_token = ""
+    top_k = ""
+    top_p = ""
+
+    reasoning_prompt_env = ""
+    es_url = ""
+    num_es = ""
+
+    def __init__(self):
+        print("Create instance of ParameterStore")

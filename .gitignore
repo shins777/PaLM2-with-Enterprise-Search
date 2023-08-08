@@ -1,16 +1,16 @@
-# source env file
-
-#-- directories ----
-
-conf/*.json
-
 #-- sources ----
 
+
+src/unit_test
+src/conf/*.json
+src/utils/vector_search.py
 src/utils/variables.py
+
 
 auth.sh
 run.sh
 *.json
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

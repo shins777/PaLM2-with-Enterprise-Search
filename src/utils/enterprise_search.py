@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 import google.auth.transport.requests
 import requests
 
-from utils.palm2 import Palm2_Util
+#from utils.palm2 import Palm2_Util
 import utils.variables as env
 
 class EnterpriseSearch():
@@ -55,10 +55,6 @@ class EnterpriseSearch():
         data=data.encode("utf8")
 
         response = requests.post(endpoint,headers=headers, data=data)
-
-        if Palm2_Util.instance().LOGGING:
-            Palm2_Util.instance().log("INFO","---------------------[ Query Start ]-------------------------")
-            Palm2_Util.instance().log("INFO","f\n\n User's input : \n{query} \n")
 
         return response.text
 
@@ -120,8 +116,6 @@ class EnterpriseSearch():
                 outcome_ref_list.append(each_outcome_ref)
                 outcome_list.append(each_outcome)
 
-        if Palm2_Util.instance().LOGGING:
-            Palm2_Util.instance().log("INFO",f"Context from Enterprise Search : \n{outcome_ref} \n")
         outcome_ref = "\n\n".join(outcome_ref_list)
         outcome = "\n\n".join(outcome_list)
 

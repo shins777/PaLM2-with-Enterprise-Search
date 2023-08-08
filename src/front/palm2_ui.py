@@ -11,13 +11,15 @@ sys.path.append(directory+"/src")
 
 import utils.variables as env
 from utils.palm2 import Palm2_Util
-from utils.store import Instance_Store
+from utils.store import ChainsStore
+from utils.store import ParameterStore
 
-from utils.enterprise_search import EnterpriseSearch
+#from utils.enterprise_search import EnterpriseSearch
+from utils.reasoning import Reasoning
+from utils.search import RAG
 
 palm2_util = Palm2_Util.instance()
-es = EnterpriseSearch()
-store = Instance_Store.instance()
+#es = EnterpriseSearch()
 
 # Set Streamlit page configuration
 st.set_page_config(page_title='Palm2 API Tester', layout='wide')
@@ -67,22 +69,23 @@ with st.sidebar.expander("Configuration", expanded=True):
     side_tab1, side_tab2 = st.tabs(["LLM Model", "Enterprise Search"])
 
     with side_tab1:
-        text_model = st.selectbox(label='Text Model', options=env.TEXT_MODEL)
-        chat_model = st.selectbox(label='Chat Model', options=env.CHAT_MODEL)
+        ParameterStore.text_model = st.selectbox(label='Text Model', options=env.TEXT_MODEL)
+        ParameterStore.chat_model = st.selectbox(label='Chat Model', options=env.CHAT_MODEL)
 
-        n_threads = st.number_input(' Number of Answer ',min_value=1,max_value=5, value=3)
+        #n_threads = st.number_input(' Number of Answer ',min_value=1,max_value=5, value=3)
+        
         st.markdown("""---""")
-        temperature = st.number_input(' Temperature ',min_value=0.0,max_value=1.0,step=0.1, format="%.1f",value= env.TEMPERATURE)
-        output_token = st.number_input(' Output Token ',min_value=100,max_value=1024,value=env.MAX_OUTPUT_TOKENS )
-        top_k = st.number_input(' Top K ',min_value=1,max_value=40, value=env.TOP_K)
-        top_p = st.number_input(' Top P ',min_value=0.0,max_value=1.0,step=0.1, format="%.1f",value= env.TOP_P)
+        ParameterStore.temperature = st.number_input(' Temperature ',min_value=0.0,max_value=1.0,step=0.1, format="%.1f",value= env.TEMPERATURE)
+        ParameterStore.output_token = st.number_input(' Output Token ',min_value=100,max_value=1024,value=env.MAX_OUTPUT_TOKENS )
+        ParameterStore.top_k = st.number_input(' Top K ',min_value=1,max_value=40, value=env.TOP_K)
+        ParameterStore.top_p = st.number_input(' Top P ',min_value=0.0,max_value=1.0,step=0.1, format="%.1f",value= env.TOP_P)
 
     with side_tab2 : 
-        default_prompt = st.text_area("Add default prompt, this will be added automatically in front of your request", value= env.default_prompt_value)
-        es_url = st.text_area("Put your Enterprise engine url to search context",value=env.end_point)
-        num_es = st.number_input(' (#) of Enterprise search results',min_value=1,max_value=5, value=3)
+        ParameterStore.reasoning_prompt_env = st.text_area("Add default prompt, this will be added automatically in front of your request", value= env.reasoning_prompt)
+        ParameterStore.es_url = st.text_area("Put your Enterprise engine url to search context",value=env.end_point)
+        ParameterStore.num_es = st.number_input(' (#) of Enterprise search results',min_value=1,max_value=5, value=3)
 
-palm2_util.model_initialize(env.PROJECT_ID,env.REGION, text_model, chat_model)
+palm2_util.model_initialize(env.PROJECT_ID,env.REGION, ParameterStore.text_model, ParameterStore.chat_model)
 
 # Set up the Streamlit app layout
 st.title("Palm2 + ES Tester")
@@ -90,12 +93,10 @@ st.subheader("An emulator to interact with Google Palm2 and Enterprise Search")
 
 context = None
 context_with_reference = None
-prompt = None
-outcomes = None
 
 chat = None
 
-tab1, tab2, tab3 = st.tabs(["Ask PaLM2 + ES (Internal References)", "Response Analysis", "Ask PaLM2 (Public References)"])
+tab1, tab2, tab3, tab4 = st.tabs(["Ask PaLM2 + ES", "PaLM2 response with reasoning", "Process of summarizations and reasonings", "Results of Enterprise Search"])
 
 with tab1 : 
     # Get the user input
@@ -112,59 +113,53 @@ with tab1 :
             print("Search mode")
 
             t1 = time.time()
-            search_result = es.retrieve_discovery_engine(es_url, num_es, user_input )
-            
+
+            rag_search = RAG()
+            rag_search.rag_search(user_input)
+
             t2 = time.time()
-            store.context, store.context_with_reference = es.parse_discovery_results(search_result)
+            reasoning = Reasoning()
+            reasoning.consolidate(user_input)
 
             t3 = time.time()
-            store.prompt = palm2_util.build_query(user_input, store.context_with_reference, default_prompt)
-
-            t4 = time.time()
-            store.outcomes = palm2_util.concurrent_call(store.prompt,temperature, output_token, top_k, top_p, n_threads)
-    
-            t5 = time.time()
-
-            palm2_util.log("INFO",f"\n\n-------------------[ Execution Time ]-----------------------")
-            palm2_util.log("INFO",f'Execution time: retrieve_discovery_engine : {t2-t1} seconds')
-            palm2_util.log("INFO",f'Execution time: parse_discovery_results :  {t3-t2} seconds')
-            palm2_util.log("INFO",f'Execution time: build_query :  {t4-t3} seconds')
-            palm2_util.log("INFO",f'Execution time: generate_response :  {t5-t4} seconds')
-            palm2_util.log("INFO",f"---------------------[ Total : {t5-t1} seconds ]------------------------")
-
-            latency_str = f"Enterprise Search : [{t2-t1}], Parse_discovery_results : [{t3-t2}], Build_query : [{t4-t3}], LLM Execution : [{t5-t4}], Total elapsed time :[{t5-t1}] "
+            reasoning.final_request(user_input)
             
-            # Context 저장.
-            store.chat = palm2_util.chat_model.start_chat(context=store.context)
+            t4 = time.time()
+            palm2_util.log("INFO",f"\n\n-------------------[ Execution Time ]-----------------------")
+            palm2_util.log("INFO",f'Execution time: RAG Search : {t2-t1} seconds')
+            palm2_util.log("INFO",f'Execution time: Reasoning :  {t3-t2} seconds')
+            palm2_util.log("INFO",f'Execution time: Final Request :  {t4-t3} seconds')
+            palm2_util.log("INFO",f"---------------------[ Total : {t4-t1} seconds ]------------------------")
+
+            ChainsStore.latency = f"Total Elapsed time : [{t2-t1}], Reasoning : [{t3-t2}], Final Request : [{t4-t3}], Total elapsed time :[{t4-t1}] "
 
             st.session_state.past.append(user_input) 
-            st.session_state.generated.append(store.outcomes) 
+            st.session_state.generated.append(ChainsStore.final_outcomes) 
 
         elif mode == "Chat":
 
             print("Chat mode")        
 
-            store.chat = palm2_util.chat_model.start_chat(context=store.context)
+            ChainsStore.chat = palm2_util.chat_model.start_chat(context=ChainsStore.context)
             
             parameters = {
-                "temperature": temperature,
-                "max_output_tokens": output_token,
-                "top_p": top_p,
-                "top_k": top_k
+                "temperature": ParameterStore.temperature,
+                "max_output_tokens": ParameterStore.output_token,
+                "top_p": ParameterStore.top_p,
+                "top_k": ParameterStore.top_k
             }
 
-            response = store.chat.send_message(user_input, **parameters)
+            response = ChainsStore.chat.send_message(user_input, **parameters)
             print(f"Response from Model: {response.text}")
 
             st.session_state.past.append(user_input) 
             st.session_state.generated.append(response.text) 
             
-            store.prompt = user_input
-            store.outcome = response.text
-
+            ChainsStore.prompt = user_input
+            ChainsStore.final_outcomes = response.text
         
         if palm2_util.LOGGING:
-            palm2_util.log("INFO", f"Response from PaLM2 :\n {outcomes}")
+            palm2_util.log("INFO", f"Response from PaLM2 :\n {ChainsStore.final_outcomes}")
             palm2_util.log("INFO","\n\n-------------------------[ Query End ]---------------------------\n\n")
 
     # Display the conversation history
@@ -173,28 +168,48 @@ with tab1 :
             st.info(st.session_state["past"][i],icon="😊")
             st.success(st.session_state["generated"][i], icon="🤖")
 
+
 with tab2:
-    st.subheader("Review the output from Palm2")
-    with st.expander("Enterprise Search result"):
-        st.write(store.context_with_reference)
-    with st.expander("Final Prompt"):
-        st.write(store.prompt)
-    with st.expander("Answer from Palm2"):
-        st.write(store.outcomes)
+    st.subheader("PaLM2 response with reasoning")
+
+    #with st.expander("Resonse from PaLM2"):
+    st.write(env.final_prompt + "\n\n" + ChainsStore.final_context + "\n\n\n\nFinal Results : \n\n" + ChainsStore.final_outcomes)
 
 with tab3:
-    # Get the user input
-    user_input2 = get_text2()
+    st.subheader("Process of summarizations and reasonings")
 
-    if st.button("Ask Palm2"):    
-        outcomes2 = palm2_util.concurrent_call(user_input2,temperature, output_token, top_k, top_p, n_threads)
+    with st.expander("Context summary of Enteprise search results"):
+        st.write(ChainsStore.summary_outcomes)
 
-        st.session_state.past2.append(user_input2) 
-        st.session_state.generated2.append(outcomes2) 
+    with st.expander("Step by step reasoning for Enteprise search results "):
+        st.write(ChainsStore.reasoning_outcomes)
 
-    # Display the conversation history
-    with st.expander("Conversation2", expanded=True):
+    with st.expander("Public Search Results"):
+        st.write(ChainsStore.public_search_result)
 
-        for i in range(len(st.session_state["past2"])-1, -1, -1):
-            st.info(st.session_state["past2"][i],icon="😊")
-            st.success(st.session_state["generated2"][i], icon="🤖")
+    with st.expander("Latency "):
+        st.write(ChainsStore.latency)
+
+with tab4:
+    st.subheader("Results of Enterprise Search")
+
+    #with st.expander("Results of Enterprise Search with context references"):
+    st.write(ChainsStore.context_with_reference)
+
+
+# with tab5:
+#     # Get the user input
+#     user_input2 = get_text2()
+
+#     if st.button("Ask Palm2"):    
+#         outcomes2 = palm2_util.concurrent_call(user_input2,ParameterStore.temperature, ParameterStore.output_token, ParameterStore.top_k, ParameterStore.top_p, max_thread=1)
+
+#         st.session_state.past2.append(user_input2) 
+#         st.session_state.generated2.append(outcomes2) 
+
+#     # Display the conversation history
+#     with st.expander("Conversation2", expanded=True):
+
+#         for i in range(len(st.session_state["past2"])-1, -1, -1):
+#             st.info(st.session_state["past2"][i],icon="😊")
+#             st.success(st.session_state["generated2"][i], icon="🤖")

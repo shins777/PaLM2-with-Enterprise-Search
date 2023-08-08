@@ -8,6 +8,10 @@ streamlit = "*"
 google-cloud-logging = "*"
 google-cloud-discoveryengine = "*"
 google-cloud-aiplatform = "*"
+google-cloud-bigquery = "*"
+db-dtypes = "*"
+torch = "*"
+transformers = "*"
 
 [dev-packages]
 ipykernel = "*"
