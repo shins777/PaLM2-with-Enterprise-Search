@@ -1,6 +1,6 @@
 ### Google_PaLM2_EnterpriseSearch ( Unstructured Search )
 
-#### To get the latest document, please contact to shins777@gmail.com
+#### To get the latest document, please contact to shins777@gmail.com. the following document could be out of date.
 
 Latest Update
 + Jul 28, 2023 
