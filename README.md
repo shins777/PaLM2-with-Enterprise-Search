@@ -1,5 +1,7 @@
 ### Google_PaLM2_EnterpriseSearch ( Unstructured Search )
 
+#### To get the latest document, please contact to shins777@gmail.com
+
 Latest Update
 + Jul 28, 2023 
     + Added Chat mode to find more detailed information from the contexts that were searched from Enterprise Search. 

@@ -184,8 +184,8 @@ with tab3:
     with st.expander("Step by step reasoning for Enteprise search results "):
         st.write(ChainsStore.reasoning_outcomes)
 
-    with st.expander("Public Search Results"):
-        st.write(ChainsStore.public_search_result)
+    # with st.expander("Public Search Results"):
+    #     st.write(ChainsStore.public_search_result)
 
     with st.expander("Latency "):
         st.write(ChainsStore.latency)
